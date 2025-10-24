@@ -1,0 +1,25 @@
+CREATE DATABASE IF NOT EXISTS system_box;
+USE system_box;
+
+-- 🧍 Users Table
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(150) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    user_type ENUM('student','teacher','public') NOT NULL DEFAULT 'student',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 💬 Complaints Table
+CREATE TABLE IF NOT EXISTS complaints (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    status ENUM('Pending','Seen','Resolved') DEFAULT 'Pending',
+    reply TEXT DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
